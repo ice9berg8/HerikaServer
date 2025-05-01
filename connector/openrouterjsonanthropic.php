@@ -401,9 +401,9 @@ class openrouterjsonanthropic
         $finalAssistantMessages = "";
         $cacheUserMessages = cacheReadFromFile("user_cache_{$GLOBALS["HERIKA_NAME"]}.tmp");
         $cacheAssistantMessages = cacheReadFromFile("assistant_cache_{$GLOBALS["HERIKA_NAME"]}.tmp");
-        Logger::error("Last cached before".time()-$cacheUserMessages["timestamp"]);
+        Logger::info("Last cached before".time()-$cacheUserMessages["timestamp"]);
         if($cacheUserMessages ==0 || $cacheAssistantMessages == 0 || time()-$cacheUserMessages["timestamp"]>300){
-            Logger::error("processing that part context size". sizeof($contextData));
+            Logger::info("processing that part context size". sizeof($contextData));
             foreach ($contextData as $n => $element) {
                 //ICE -- Sending all the user and assistant conent as a text blob except last 4 events (It does not work properly otherwise)
                 if ($element["role"] == "user" && $n < $n_ctxsize - 4) {
@@ -423,7 +423,7 @@ class openrouterjsonanthropic
             cacheWriteToFile("user_cache_{$GLOBALS["HERIKA_NAME"]}.tmp",$finalUserMessages,$writeTime);
             cacheWriteToFile("assistant_cache_{$GLOBALS["HERIKA_NAME"]}.tmp",$finalAssistantMessages,$writeTime);
         }else{
-            Logger::error("processing other part");
+            Logger::info("processing other part");
             $contextDataCopy[] = ['role' => "user", "content" => [["type" => "text", "text" => rtrim($cacheUserMessages["content"]), "cache_control" => ["type" => "ephemeral"]]]];
             $contextDataCopy[] = ['role' => "assistant", "content" => [["type" => "text", "text" => rtrim($cacheAssistantMessages["content"]), "cache_control" => ["type" => "ephemeral"]]]];
             foreach ($contextData as $n => $element) {
