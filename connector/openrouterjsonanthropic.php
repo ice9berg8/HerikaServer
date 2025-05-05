@@ -411,8 +411,12 @@ class openrouterjsonanthropic
                 } else if ($element["role"] == "assistant" && $n < $n_ctxsize - 4) {
                     $finalAssistantMessages .= $element["content"] . " ";
                 } else if ($n == $n_ctxsize - 4) {
-                    $contextDataCopy[] = ['role' => "user", "content" => [["type" => "text", "text" => rtrim($finalUserMessages), "cache_control" => ["type" => "ephemeral"]]]];
-                    $contextDataCopy[] = ['role' => "assistant", "content" => [["type" => "text", "text" => rtrim($finalAssistantMessages), "cache_control" => ["type" => "ephemeral"]]]];
+                    if(!empty($finalUserMessages)){
+                        $contextDataCopy[] = ['role' => "user", "content" => [["type" => "text", "text" => rtrim($finalUserMessages), "cache_control" => ["type" => "ephemeral"]]]];
+                    }
+                    if(!empty($finalAssistantMessages)){
+                        $contextDataCopy[] = ['role' => "assistant", "content" => [["type" => "text", "text" => rtrim($finalAssistantMessages), "cache_control" => ["type" => "ephemeral"]]]];
+                    }
                     $contextDataCopy[] = $element;
                 } else {
                     $contextDataCopy[] = $element;
